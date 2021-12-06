@@ -9,13 +9,13 @@ import (
 )
 
 type Server struct {
-	npool.UnimplementedServiceExampleServer
+	npool.UnimplementedAppPracticeServer
 }
 
 func Register(server grpc.ServiceRegistrar) {
-	npool.RegisterServiceExampleServer(server, &Server{})
+	npool.RegisterAppPracticeServer(server, &Server{})
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
-	return npool.RegisterServiceExampleHandlerFromEndpoint(context.Background(), mux, endpoint, opts)
+	return npool.RegisterAppPracticeHandlerFromEndpoint(context.Background(), mux, endpoint, opts)
 }

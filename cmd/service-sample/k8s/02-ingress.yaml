@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: service-sample-npool-top-ingress
+  name: app-practice-npool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: service-sample-npool
-    k8s.kuboard.cn/workload: service-sample-npool
+    k8s.kuboard.cn/displayName: app-practice-npool
+    k8s.kuboard.cn/workload: app-practice-npool
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-service-sample-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-app-practice-prefix@kubernetescrd
 
 spec:
   rules:
     - host: api.npool.top
       http:
         paths:
-          - path: /api/service-sample
+          - path: /api/app-practice
             backend:
-              serviceName: service-sample
+              serviceName: app-practice
               servicePort: 32759
 
 ---
@@ -25,23 +25,23 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: service-sample-xpool-top-ingress
+  name: app-practice-xpool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: service-sample-xpool
-    k8s.kuboard.cn/workload: service-sample-xpool
+    k8s.kuboard.cn/displayName: app-practice-xpool
+    k8s.kuboard.cn/workload: app-practice-xpool
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-service-sample-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-app-practice-prefix@kubernetescrd
 
 spec:
   rules:
     - host: api.xpool.top
       http:
         paths:
-          - path: /api/service-sample
+          - path: /api/app-practice
             backend:
-              serviceName: service-sample
+              serviceName: app-practice
               servicePort: 32759
 
 ---
@@ -49,9 +49,9 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: strip-service-sample-prefix
+  name: strip-app-practice-prefix
   namespace: kube-system
 spec:
   stripPrefix:
     prefixes:
-      - /api/service-sample
+      - /api/app-practice

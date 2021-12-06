@@ -1,6 +1,6 @@
 commonLabels:
-  # app: service-sample
+  # app: app-practice
 
 resources:
-- 01-service-sample.yaml
+- 01-app-practice.yaml
 - 02-ingress.yaml

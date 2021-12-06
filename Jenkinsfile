@@ -71,7 +71,7 @@ pipeline {
           servicename="sample-service"
 
           PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
-          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists service_sample;"
+          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists app_practice;"
 
           kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename after-test || true
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename || true
@@ -84,7 +84,7 @@ pipeline {
 
             cd .apollo-base-config
             ./apollo-base-config.sh $APP_ID $TARGET_ENV $vhost
-            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name service_sample
+            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name app_practice
             cd -
           done
 
@@ -103,7 +103,7 @@ pipeline {
       }
       steps {
         sh(returnStdout: true, script: '''
-          images=`docker images | grep entropypool | grep service-sample | grep latest | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep app-practice | grep latest | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image
           done
@@ -229,7 +229,7 @@ pipeline {
           tag=`git describe --tags $revlist`
           git checkout $tag
 
-          images=`docker images | grep entropypool | grep service-sample | grep $tag | awk '{ print $3 }'`
+          images=`docker images | grep entropypool | grep app-practice | grep $tag | awk '{ print $3 }'`
           for image in $images; do
             docker rmi $image -f
           done
@@ -277,7 +277,7 @@ pipeline {
           tag=`git describe --tags $revlist`
 
           git checkout $tag
-          sed -i "s/service-sample:latest/service-sample:$tag/g" cmd/service-sample/k8s/01-service-sample.yaml
+          sed -i "s/app-practice:latest/app-practice:$tag/g" cmd/app-practice/k8s/01-app-practice.yaml
           TAG=$tag make deploy-to-k8s-cluster
         '''.stripIndent())
       }
@@ -300,7 +300,7 @@ pipeline {
           tag=$major.$minor.$patch
 
           git checkout $tag
-          sed -i "s/service-sample:latest/service-sample:$tag/g" cmd/service-sample/k8s/01-service-sample.yaml
+          sed -i "s/app-practice:latest/app-practice:$tag/g" cmd/app-practice/k8s/01-app-practice.yaml
           TAG=$tag make deploy-to-k8s-cluster
         '''.stripIndent())
       }
@@ -315,7 +315,7 @@ pipeline {
         sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
         sh (returnStdout: false, script: '''
           PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
-          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists service_sample;"
+          kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists app_practice;"
 
           username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`
           for vhost in `cat cmd/*/*.viper.yaml | grep hostname | awk '{print $2}' | sed 's/"//g' | sed 's/\\./-/g'`; do
@@ -324,7 +324,7 @@ pipeline {
 
             cd .apollo-base-config
             ./apollo-base-config.sh $APP_ID $TARGET_ENV $vhost
-            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name service_sample
+            ./apollo-item-config.sh $APP_ID $TARGET_ENV $vhost database_name app_practice
             cd -
           done
         '''.stripIndent())

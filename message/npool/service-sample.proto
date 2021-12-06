@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package service.sample.v1;
+package app.practice.v1;
 
 option go_package = "github.com/NpoolPlatform/go-service-app-template/message/npool";
 
@@ -8,7 +8,7 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 // Service Name
-service ServiceExample {
+service AppPractice {
     // Method Version
     rpc Version (google.protobuf.Empty) returns (VersionResponse){
         option (google.api.http) = {

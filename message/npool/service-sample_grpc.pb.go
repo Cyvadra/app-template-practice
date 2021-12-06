@@ -4,6 +4,7 @@ package npool
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -15,10 +16,10 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ServiceExampleClient is the client API for ServiceExample service.
+// AppPracticeClient is the client API for AppPractice service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ServiceExampleClient interface {
+type AppPracticeClient interface {
 	// Method Version
 	Version(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*VersionResponse, error)
 }
@@ -27,78 +28,77 @@ type serviceExampleClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewServiceExampleClient(cc grpc.ClientConnInterface) ServiceExampleClient {
+func NewAppPracticeClient(cc grpc.ClientConnInterface) AppPracticeClient {
 	return &serviceExampleClient{cc}
 }
 
 func (c *serviceExampleClient) Version(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*VersionResponse, error) {
 	out := new(VersionResponse)
-	err := c.cc.Invoke(ctx, "/service.sample.v1.ServiceExample/Version", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/app.practice.v1.AppPractice/Version", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ServiceExampleServer is the server API for ServiceExample service.
-// All implementations must embed UnimplementedServiceExampleServer
+// AppPracticeServer is the server API for AppPractice service.
+// All implementations must embed UnimplementedAppPracticeServer
 // for forward compatibility
-type ServiceExampleServer interface {
+type AppPracticeServer interface {
 	// Method Version
 	Version(context.Context, *emptypb.Empty) (*VersionResponse, error)
-	mustEmbedUnimplementedServiceExampleServer()
+	mustEmbedUnimplementedAppPracticeServer()
 }
 
-// UnimplementedServiceExampleServer must be embedded to have forward compatible implementations.
-type UnimplementedServiceExampleServer struct {
-}
+// UnimplementedAppPracticeServer must be embedded to have forward compatible implementations.
+type UnimplementedAppPracticeServer struct{}
 
-func (UnimplementedServiceExampleServer) Version(context.Context, *emptypb.Empty) (*VersionResponse, error) {
+func (UnimplementedAppPracticeServer) Version(context.Context, *emptypb.Empty) (*VersionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Version not implemented")
 }
-func (UnimplementedServiceExampleServer) mustEmbedUnimplementedServiceExampleServer() {}
+func (UnimplementedAppPracticeServer) mustEmbedUnimplementedAppPracticeServer() {}
 
-// UnsafeServiceExampleServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ServiceExampleServer will
+// UnsafeAppPracticeServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AppPracticeServer will
 // result in compilation errors.
-type UnsafeServiceExampleServer interface {
-	mustEmbedUnimplementedServiceExampleServer()
+type UnsafeAppPracticeServer interface {
+	mustEmbedUnimplementedAppPracticeServer()
 }
 
-func RegisterServiceExampleServer(s grpc.ServiceRegistrar, srv ServiceExampleServer) {
-	s.RegisterService(&ServiceExample_ServiceDesc, srv)
+func RegisterAppPracticeServer(s grpc.ServiceRegistrar, srv AppPracticeServer) {
+	s.RegisterService(&AppPractice_ServiceDesc, srv)
 }
 
-func _ServiceExample_Version_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AppPractice_Version_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ServiceExampleServer).Version(ctx, in)
+		return srv.(AppPracticeServer).Version(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/service.sample.v1.ServiceExample/Version",
+		FullMethod: "/app.practice.v1.AppPractice/Version",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ServiceExampleServer).Version(ctx, req.(*emptypb.Empty))
+		return srv.(AppPracticeServer).Version(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ServiceExample_ServiceDesc is the grpc.ServiceDesc for ServiceExample service.
+// AppPractice_ServiceDesc is the grpc.ServiceDesc for AppPractice service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ServiceExample_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.sample.v1.ServiceExample",
-	HandlerType: (*ServiceExampleServer)(nil),
+var AppPractice_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "app.practice.v1.AppPractice",
+	HandlerType: (*AppPracticeServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Version",
-			Handler:    _ServiceExample_Version_Handler,
+			Handler:    _AppPractice_Version_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "npool/service-sample.proto",
+	Metadata: "npool/app-practice.proto",
 }

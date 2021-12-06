@@ -1,6 +1,6 @@
 FROM jrei/systemd-centos:7
 
-COPY ServiceSample.viper.yaml /etc/ServiceSample/ServiceSample.viper.yaml
-COPY service-sample /usr/local/bin/service-sample
+COPY AppPractice.viper.yaml /etc/AppPractice/AppPractice.viper.yaml
+COPY app-practice /usr/local/bin/app-practice
 
-CMD ["service-sample", "run"]
+CMD ["app-practice", "run"]
