@@ -1,7 +1,5 @@
 # Npool go service app template
 
-[![Test](https://github.com/NpoolPlatform/go-service-app-template/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/NpoolPlatform/go-service-app-template/actions/workflows/main.yml)
-
 [目录](#目录)
 - [功能](#功能)
 - [命令](#命令)
